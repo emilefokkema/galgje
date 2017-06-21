@@ -59,11 +59,12 @@
 			x:0,
 			y:0
 		},{
-			im: stringImage(["/"])
-			     .plus(stringImage(["/"]),1,1)
-			     .plus(stringImage(["/"]),2,2)
-			     .transpose(),
-			x: 2,
+			im: stringImage([
+			"  /",
+			" /",
+			"/"
+			]),
+			x:1,
 			y: 1
 		}
 	];
