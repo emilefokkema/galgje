@@ -1,5 +1,8 @@
 (function(){
 	var galgje = document.getElementById("galgje");
+	galgje.addEventListener("click",function(){
+		galgje.select();
+	})
 	var woord = document.getElementById("woord");
 	var letters = document.getElementById("letters");
 	var spaces = function(n){return Array.apply(null, new Array(n)).map(function(){return " ";}).join("");};
