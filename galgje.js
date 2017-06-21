@@ -40,15 +40,15 @@
 				var numberOfLines = Math.max.apply(null, lines.map(function(l){return l.length;}));
 				var newLines = Array.apply(null, new Array(numberOfLines)).map(function(){return "";});
 				lines.map(function(l){
-					for(var i=0;i<l.length;i++){
-						newLines[i] += l[i];
+					for(var i=0;i<numberOfLines;i++){
+						newLines[i] += l[i] || " ";
 					}
 				});
 				return stringImage(newLines);
 			}
 		};
 	};
-
+	
 	var galgjeParts = [
 		{
 			im: stringImage(["|||||||"]).transpose(),
