@@ -1,6 +1,9 @@
 (function(){
 	var woord = document.getElementById("woord");
 	var letters = document.getElementById("letters");
+	var getLetters = function(){
+		return (letters.value || "").match(/[a-zA-Z]/g) || [];
+	};
 	var galgje = document.getElementById("galgje");
 
 	trackState.config({
@@ -8,8 +11,8 @@
 		serialize:function(){
 			var result = woord.value;
 			if(!result){return "";}
-			var lettersValue = letters.value;
-			return result + (lettersValue?"_"+lettersValue:"");
+			var letterString = getLetters().join("");
+			return result + (letterString?"_"+letterString:"");
 		},
 		deserialize:function(s){
 			if(!s){return;}
@@ -131,7 +134,7 @@
 	};
 
 	var draw = function(){
-		var lettersArray = (letters.value || "").match(/[a-zA-Z]/g) || [];
+		var lettersArray = getLetters();
 		var woordValue = woord.value;
 
 		var wrongLetters = getWrongLetters(woordValue, lettersArray);
