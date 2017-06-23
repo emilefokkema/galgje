@@ -1,5 +1,22 @@
 (function(){
 	var galgje = document.getElementById("galgje");
+	var readHash = function(){
+		var s = window.location.hash;
+		if(!s){return;}
+		s = s.substr(1);
+		var match = s.match(/^([a-zA-Z]+)(?:_([a-zA-Z]+))?$/);
+		if(!match){return;}
+		return {
+			woord:match[1],
+			letters:match[2]
+		};
+	};
+	var createHash = function(){
+		var result = woord.value;
+		if(!result){return;}
+		var lettersValue = letters.value;
+		return result + (lettersValue?"_"+lettersValue:"");
+	};
 	galgje.addEventListener("click",function(){
 		galgje.select();
 	})
@@ -54,7 +71,7 @@
 	
 	var galgjeParts = [
 		{
-			im: stringImage(["|||||||"]).transpose(),
+			im: stringImage(["||||||||"]).transpose(),
 			x:0,
 			y:1
 		},{
@@ -62,6 +79,11 @@
 			x:0,
 			y:0
 		},{
+			im: stringImage(["-------"]),
+			x:0,
+			y:9
+		},
+		{
 			im: stringImage([
 			"  /",
 			" /",
@@ -80,34 +102,59 @@
 		return image;
 	};
 
-	var draw = function(woord, letters){
-		letters = (letters || "").match(/[a-zA-Z]/g) || [];
-		var i, wrongLetters = "";
+	var getHiddenWord = function(woord, letters){
 		var hiddenWord = "";
-		for(i=0;i<letters.length;i++){
-			if(woord.indexOf(letters[i]) == -1){
-				wrongLetters += letters[i];
-			}
-		}
-		for(i=0;i<woord.length;i++){
+		for(var i=0;i<woord.length;i++){
 			if(letters.indexOf(woord[i]) == -1){
 				hiddenWord += "_ ";
 			}else{
 				hiddenWord += woord[i] + " ";
 			}
 		}
+		return stringImage([hiddenWord]);
+	};
+
+	var getWrongLetters = function(woord, letters){
+		var wrongLetters = "";
+		for(var i=0;i<letters.length;i++){
+			if(woord.indexOf(letters[i]) == -1){
+				wrongLetters += letters[i];
+			}
+		}
+		return {
+			image:stringImage([wrongLetters]).transpose(),
+			length:wrongLetters.length
+		};
+	};
+
+	var draw = function(){
+		var lettersArray = (letters.value || "").match(/[a-zA-Z]/g) || [];
+		var woordValue = woord.value;
+
+		var wrongLetters = getWrongLetters(woordValue, lettersArray);
 		var image = makeGalgje(wrongLetters.length);
 		galgje.value = image
-			.plus(stringImage([hiddenWord]), 0, 10)
-			.plus(stringImage([wrongLetters]).transpose(), 12, 2)
+			.plus(getHiddenWord(woordValue, lettersArray), 0, 11)
+			.plus(wrongLetters.image, 12, 2)
 			.toString();
-	}
+		var hash = createHash();
+		if(hash){
+			window.location.hash = hash;
+		}
+	};
 
 	woord.addEventListener('keyup', function(){
-		draw(woord.value, letters.value);
+		draw();
 	});
 
 	letters.addEventListener('keyup', function(){
-		draw(woord.value, letters.value);
+		draw();
 	});
+
+	var hash = readHash();
+	if(hash){
+		woord.value = hash.woord;
+		letters.value = hash.letters;
+		draw();
+	}
 })()
