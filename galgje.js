@@ -1,27 +1,30 @@
 (function(){
+	var woord = document.getElementById("woord");
+	var letters = document.getElementById("letters");
 	var galgje = document.getElementById("galgje");
-	var readHash = function(){
-		var s = window.location.hash;
-		if(!s){return;}
-		s = s.substr(1);
-		var match = s.match(/^([a-zA-Z]+)(?:_([a-zA-Z]+))?$/);
-		if(!match){return;}
-		return {
-			woord:match[1],
-			letters:match[2]
-		};
-	};
-	var createHash = function(){
-		var result = woord.value;
-		if(!result){return;}
-		var lettersValue = letters.value;
-		return result + (lettersValue?"_"+lettersValue:"");
-	};
+
+	trackState.config({
+		cookieKey:"galgje",
+		serialize:function(){
+			var result = woord.value;
+			if(!result){return "";}
+			var lettersValue = letters.value;
+			return result + (lettersValue?"_"+lettersValue:"");
+		},
+		deserialize:function(s){
+			if(!s){return;}
+			var match = s.match(/^([a-zA-Z]+)(?:_([a-zA-Z]+))?$/);
+			if(!match){return;}
+			woord.value = match[1];
+			letters.value = match[2];
+		}
+	});
+	
+	
 	galgje.addEventListener("click",function(){
 		galgje.select();
 	})
-	var woord = document.getElementById("woord");
-	var letters = document.getElementById("letters");
+	
 	var spaces = function(n){return Array.apply(null, new Array(n)).map(function(){return " ";}).join("");};
 	var stringSum = function(a, b, x){
 		if(!b){return a;}
@@ -137,10 +140,7 @@
 			.plus(getHiddenWord(woordValue, lettersArray), 0, 11)
 			.plus(wrongLetters.image, 12, 2)
 			.toString();
-		var hash = createHash();
-		if(hash){
-			window.location.hash = hash;
-		}
+		trackState.write();
 	};
 
 	woord.addEventListener('keyup', function(){
@@ -151,10 +151,6 @@
 		draw();
 	});
 
-	var hash = readHash();
-	if(hash){
-		woord.value = hash.woord;
-		letters.value = hash.letters;
-		draw();
-	}
+	trackState.read();
+	draw();
 })()
