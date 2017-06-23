@@ -4,12 +4,15 @@
 	var getLetters = function(){
 		return (letters.value || "").match(/[a-zA-Z]/g) || [];
 	};
+	var getWoord = function(){
+		return woord.value.toLowerCase();
+	};
 	var galgje = document.getElementById("galgje");
 
 	trackState.config({
 		cookieKey:"galgje",
 		serialize:function(){
-			var result = woord.value;
+			var result = getWoord();
 			if(!result){return "";}
 			var letterString = getLetters().join("");
 			return result + (letterString?"_"+letterString:"");
@@ -135,7 +138,7 @@
 
 	var draw = function(){
 		var lettersArray = getLetters();
-		var woordValue = woord.value;
+		var woordValue = getWoord();
 
 		var wrongLetters = getWrongLetters(woordValue, lettersArray);
 		var image = makeGalgje(wrongLetters.length);
