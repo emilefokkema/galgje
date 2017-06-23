@@ -2,7 +2,7 @@
 	var woord = document.getElementById("woord");
 	var letters = document.getElementById("letters");
 	var getLetters = function(){
-		return (letters.value || "").match(/[a-zA-Z]/g) || [];
+		return ((letters.value || "").match(/[a-zA-Z]/g) || []).map(function(l){return l.toLowerCase();});
 	};
 	var getWoord = function(){
 		return woord.value.toLowerCase();
@@ -19,7 +19,7 @@
 		},
 		deserialize:function(s){
 			if(!s){return;}
-			var match = s.match(/^([a-zA-Z]+)(?:_([a-zA-Z]+))?$/);
+			var match = s.match(/^([a-z]+)(?:_([a-z]+))?$/);
 			if(!match){return;}
 			woord.value = match[1];
 			letters.value = match[2];
