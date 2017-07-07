@@ -100,6 +100,50 @@
 			]),
 			x:1,
 			y: 1
+		},
+		{
+			im: stringImage([
+			"\\",
+			" \\",
+			"  \\"
+			]),
+			x:1,
+			y: 6
+		},
+		{
+			im: stringImage(["||"]).transpose(),
+			x:5,
+			y:1
+		},
+		{
+			im:stringImage(["O"]),
+			x:5,
+			y:3
+		},
+		{
+			im:stringImage(["|"]),
+			x:5,
+			y:4
+		},
+		{
+			im:stringImage(["/"]),
+			x:4,
+			y:4
+		},
+		{
+			im:stringImage(["\\"]),
+			x:6,
+			y:4
+		},
+		{
+			im:stringImage(["/"]),
+			x:4,
+			y:5
+		},
+		{
+			im:stringImage(["\\"]),
+			x:6,
+			y:5
 		}
 	];
 
